@@ -1,14 +1,13 @@
 '''
 [Cheems Smnake]
-Description: It's a snake game cheemsificated.
-Autor: Kazymila (Kazy)
+Description: It's a snake game cheemsificated :D
+Autor: Kazy
 '''
 import turtle
 import random
 import time
-import pydub
-from pydub.playback import play
 from pyglet import font
+from playsound import playsound
 
 # Set Window
 window = turtle.Screen()
@@ -17,32 +16,40 @@ window.bgcolor("#2c2a38")
 window.title("Cheems Smnake")
 turtle.Screen()._root.iconbitmap("Assets/cheemsIcon.ico")
 
-# Add sounds
-pickupSound = pydub.AudioSegment.from_wav("Assets/Sounds/pickupFood.wav")
-deadSound = pydub.AudioSegment.from_wav("Assets/Sounds/wallHit.wav")
-bonk = pydub.AudioSegment.from_wav("Assets/Sounds/bonk.wav")
-
-# Add font
+# Load font
 font.add_file("Assets/joystix monospace.ttf")
+font_src = ("joystix monospace", 15, "normal")
+font_h1 = ("joystix monospace", 32, "normal")
+
+# Sounds
+PICKUP_SOUND = "Assets/Sounds/pickupFood.wav"
+DEATH_SOUND = "Assets/Sounds/wallHit.wav"
+BONK_SOUND = "Assets/Sounds/bonk.wav"
+
+# Sprites
+SPRITE_CHEEMS = ["Assets/Sprites/cheems_1.gif","Assets/Sprites/cheems_2.gif",
+	         	 "Assets/Sprites/bonk_1.gif","Assets/Sprites/bonk_2.gif"]
+SPRITE_PORTRAITS = ["Assets/Sprites/Portrait_nice.gif",
+					"Assets/Sprites/Portrait_happy.gif",
+					"Assets/Sprites/Portrait_anxiety.gif",
+					"Assets/Sprites/Portrait_sad.gif",
+					"Assets/Sprites/Portrait_dead.gif"]
 
 # ========================= Add cheems ==============================
-spr_cheems = ["Assets/Sprites/cheems_1.gif","Assets/Sprites/cheems_2.gif","Assets/Sprites/bonk_1.gif","Assets/Sprites/bonk_2.gif"]
-spr_portrait = ["Assets/Sprites/Portrait_nice.gif","Assets/Sprites/Portrait_happy.gif","Assets/Sprites/Portrait_anxiety.gif","Assets/Sprites/Portrait_sad.gif","Assets/Sprites/Portrait_dead.gif"]
+for i in range(len(SPRITE_CHEEMS)):
+	window.addshape(SPRITE_CHEEMS[i])
 
-for i in range(len(spr_cheems)):
-	window.addshape(spr_cheems[i])
-
-for i in range(len(spr_portrait)):
-	window.addshape(spr_portrait[i])
+for i in range(len(SPRITE_PORTRAITS)):
+	window.addshape(SPRITE_PORTRAITS[i])
 
 cheems = turtle.Turtle()
-cheems.shape(spr_cheems[0])
+cheems.shape(SPRITE_CHEEMS[0])
 cheems.speed(0)
 cheems.penup()
 cheems.setpos(-5,20)
 
 portrait = turtle.Turtle()
-portrait.shape(spr_portrait[0])
+portrait.shape(SPRITE_PORTRAITS[0])
 portrait.speed(0)
 portrait.penup()
 portrait.hideturtle()
@@ -68,7 +75,7 @@ frame_line.goto(x_leftLimit,y_topLimit)
 
 portrait.setpos(x_rightLimit-55, y_topLimit+63)
 
-#========================= Score Board ==============================
+# ========================= Score Board =============================
 score = 0
 highscore = 0
 score_label = turtle.Turtle()
@@ -77,23 +84,20 @@ score_label.color("white")
 score_label.speed(0)
 score_label.penup()
 score_label.setpos(x_leftLimit+10,y_topLimit+15)
-font_src = ("joystix monospace", 15, "normal")
 score_label.write("Score = "+str(score)+" | High Score = "+str(highscore), font=font_src)
 
 def updateScore():
 	score_label.clear()
 	score_label.write("Score = "+str(score)+" | High Score = "+str(highscore), font=font_src)
 
-#=========================== Headings ================================
-font_h1 = ("joystix monospace", 32, "normal")
-
+# =========================== Labels ================================
 by = turtle.Turtle()
 by.hideturtle()
 by.color("white")
 by.speed(0)
 by.penup()
 by.setpos(x_rightLimit-80,y_floorLimit-27)
-by.write("@Kazymila", font=("joystix monospace", 11, "normal"))
+by.write("@Kazymila", font=font_src)
 
 Title = turtle.Turtle()
 Title.hideturtle()
@@ -118,7 +122,7 @@ play_text.penup()
 play_text.setpos(x_leftLimit+130,y_floorLimit+80)
 play_text.write("Press Emnter to play", font=font_src)
 
-#======================== Snake and food ============================
+# ======================== Snake and food ===========================
 ## Snake head
 head = turtle.Turtle(shape="square")
 head.hideturtle()
@@ -147,11 +151,11 @@ def setFood():
 	if(head.position() == (x_pos,y_pos)): setFood()
 	else: food.setpos(x_pos,y_pos)
 
-#============================ Game Over =============================
+# =========================== Game Over =============================
 def gameOver():
-	play(deadSound)
+	playsound(DEATH_SOUND)
 	updateScore()
-	portrait.shape(spr_portrait[-1])
+	portrait.shape(SPRITE_PORTRAITS[-1])
 
 	# Reset the snake
 	head.hideturtle()
@@ -169,22 +173,22 @@ def gameOver():
 	play_text.write("Press Emnter to play", font=font_src)
 
 	# Bonk animation:
-	cheems.shape(spr_cheems[2])
+	cheems.shape(SPRITE_CHEEMS[2])
 	cheems.setpos(0,20)
 	cheems.showturtle()
 
 	while(running):
 		time.sleep(0.2)
-		cheems.shape(spr_cheems[3])
-		play(bonk)
+		cheems.shape(SPRITE_CHEEMS[3])
+		playsound(BONK_SOUND)
 		play_text.clear()
 		time.sleep(0.2)
-		cheems.shape(spr_cheems[2])
+		cheems.shape(SPRITE_CHEEMS[2])
 		play_text.write("Press Emnter to play", font=font_src)
 	
 	window.onkey(playGame, "Return")
 
-#============================= Run Game =============================
+# ============================ Run Game =============================
 def playGame():
 	global score
 	global highscore
@@ -208,14 +212,14 @@ def playGame():
 
 		# When snake eat food
 		if(head.distance(food.position()) < 20):
-			portrait.shape(spr_portrait[1])
+			portrait.shape(SPRITE_PORTRAITS[1])
 			setFood()
 			snakeGrow()
 			score += 1
 			if(score > highscore):
 				highscore = score
 			updateScore()
-			play(pickupSound)
+			playsound(PICKUP_SOUND)
 
 		# Move snake body with the head
 		for i in range(len(body_segments)-1,0,-1):
@@ -235,16 +239,18 @@ def playGame():
 			head.forward(25)
 
 		# Collision with the walls
-		if(head.ycor() > y_topLimit-20 or head.ycor() < y_floorLimit+20 or head.xcor() > x_rightLimit-25 or head.xcor() < x_leftLimit+25): 
+		if(head.ycor() > y_topLimit-20 or head.ycor() < y_floorLimit+20 or 
+     	   head.xcor() > x_rightLimit-25 or head.xcor() < x_leftLimit+25): 
 			score = 0
 			gameOver()
 			break
 
 		# Cheems with anxiety for posible collision
-		if(head.ycor() > y_topLimit-50 or head.ycor() < y_floorLimit+50 or head.xcor() > x_rightLimit-50 or head.xcor() < x_leftLimit+50): 
-			portrait.shape(spr_portrait[2])
+		if(head.ycor() > y_topLimit-50 or head.ycor() < y_floorLimit+50 or 
+     	   head.xcor() > x_rightLimit-50 or head.xcor() < x_leftLimit+50): 
+			portrait.shape(SPRITE_PORTRAITS[2])
 		else:
-			portrait.shape(spr_portrait[0])
+			portrait.shape(SPRITE_PORTRAITS[0])
 
 		# Collision with the body
 		for segment in body_segments:
@@ -253,7 +259,7 @@ def playGame():
 				gameOver()
 				break
 
-#======================== Set controllers ===========================
+# ======================= Set controllers ===========================
 def moveUp():
 	if(len(body_segments) > 0 and head.heading() == 270): return
 	else: head.setheading(90)
@@ -287,15 +293,15 @@ window.onkey(moveDown, "s")
 window.onkey(playGame, "Return")
 turtle.TK._default_root.protocol("WM_DELETE_WINDOW", quit)
 
-#============================= Start Game ===========================
+# ============================ Start Game ===========================
 window.listen()
 running = True
 
 # Cheems intro animation:
 while(running):
 	time.sleep(0.4)
-	cheems.shape(spr_cheems[1])
+	cheems.shape(SPRITE_CHEEMS[1])
 	play_text.clear()
 	time.sleep(0.4)
-	cheems.shape(spr_cheems[0])
+	cheems.shape(SPRITE_CHEEMS[0])
 	play_text.write("Press Emnter to play", font=font_src)
