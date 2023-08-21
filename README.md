@@ -14,7 +14,7 @@ It can also be run in an Windows executable (.exe) from [releases](https://githu
 
 ---
 
-⚠️ ***NOTE: Is necessary install "joystick monospace.tff" font from the "Assets" folder, to view the game correctly!*** ⚠️
+⚠️ ***NOTE: It is necessary to install "joystick monospace.tff" font, from the "Assets" folder, to view the game correctly!*** ⚠️
 
 ---
 
