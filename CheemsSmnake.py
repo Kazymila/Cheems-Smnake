@@ -1,7 +1,7 @@
 '''
 [Cheems Smnake]
 Description: It's a snake game cheemsificated :D
-Autor: Kazy
+Autor: Kazymila (Kazy)
 '''
 import turtle
 import random
@@ -20,6 +20,7 @@ turtle.Screen()._root.iconbitmap("Assets/cheemsIcon.ico")
 font.add_file("Assets/joystix monospace.ttf")
 font_src = ("joystix monospace", 15, "normal")
 font_h1 = ("joystix monospace", 32, "normal")
+font_p = ("joystix monospace", 11, "normal")
 
 # Sounds
 PICKUP_SOUND = "Assets/Sounds/pickupFood.wav"
@@ -97,7 +98,7 @@ by.color("white")
 by.speed(0)
 by.penup()
 by.setpos(x_rightLimit-80,y_floorLimit-27)
-by.write("@Kazymila", font=font_src)
+by.write("@Kazymila", font=font_p)
 
 Title = turtle.Turtle()
 Title.hideturtle()
